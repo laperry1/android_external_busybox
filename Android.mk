@@ -88,7 +88,9 @@ endif
 
 BUSYBOX_C_INCLUDES = \
 	$(BB_PATH)/include $(BB_PATH)/libbb \
+	bionic/libc \
 	bionic/libc/private \
+	bionic/libc/dns/include \
 	bionic/libm/include \
 	bionic/libc \
 	bionic/libm \
