@@ -1,4 +1,3 @@
-/* vi: set sw=4 ts=4: */
 /*
  * stolen from net-tools-1.59 and stripped down for busybox by
  *			Erik Andersen <andersen@codepoet.org>
@@ -54,8 +53,8 @@
 #define _PATH_PROCNET_DEV               "/proc/net/dev"
 #define _PATH_PROCNET_IFINET6           "/proc/net/if_inet6"
 
-#if defined(HAVE_AFINET6) && !defined(BIONIC_L)
-# ifndef _LINUX_IN6_H
+#ifdef HAVE_AFINET6
+#ifndef _UAPI_IPV6_H
 /*
  * This is from linux/include/net/ipv6.h
  */
@@ -64,7 +63,7 @@ struct in6_ifreq {
 	uint32_t ifr6_prefixlen;
 	unsigned int ifr6_ifindex;
 };
-# endif
+#endif
 #endif /* HAVE_AFINET6 */
 
 /* Defines for glibc2.0 users. */
