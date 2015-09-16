@@ -33,22 +33,11 @@
 # if ENABLE_FEATURE_IPV6
 #  include <netinet/in6.h>
 # endif
-# define ANDROID_CHANGES
-# ifdef BIONIC_L
-#  include <arpa/nameser.h>
-#  include <dns/include/resolv_private.h>
-#  include <dns/resolv/res_private.h>
-# else
-#  include <arpa_nameser.h>
-#  include <private/resolv_private.h>
-#  include <netbsd/resolv/res_private.h>
-# endif
-
-static struct __res_state res_st;
-struct __res_state * __res_state(void)
-{
-	return &res_st;
-}
+# include <arpa/nameser.h>
+# include <resolv_private.h>
+# include <resolv.h>
+# undef _res
+# define _res (*__res_get_state())
 #endif
 
 #define EXT(res) ((&res)->_u._ext)
@@ -154,7 +143,7 @@ static void server_print(void)
 
 	if (!sa)
 #endif
-		sa = (struct sockaddr*) &_res.nsaddr_list[0];
+		//sa = (struct sockaddr*)&_res.nsaddr_list[0];
 	server = xmalloc_sockaddr2dotted_noport(sa);
 
 	print_host(server, "Server:");
@@ -176,9 +165,9 @@ static void set_default_dns(const char *server)
 	lsa = xhost2sockaddr(server, 53);
 
 	if (lsa->u.sa.sa_family == AF_INET) {
-		_res.nscount = 1;
+		//_res.nscount = 1;
 		/* struct copy */
-		_res.nsaddr_list[0] = lsa->u.sin;
+		//_res.nsaddr_list[0] = lsa->u.sin;
 	}
 
 #if ENABLE_FEATURE_IPV6
